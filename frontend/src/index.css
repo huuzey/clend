@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.logincontainer {
+  background-image: url("./../public/petroself.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  width: 100%;
+}
+.unlogin {
+  animation: login 4s ease-in-out 1s infinite alternate;
+  border-radius: 37px;
+}
+.headercontainer {
+  animation: headercon 4s ease-in-out 1s infinite alternate;
+  border-radius: 37px;
+}
+@keyframes login {
+  0% {
+    border: 1.5px solid #7aee72;
+  }
+  20% {
+    border: 1.5px solid #4ef542;
+  }
+  40% {
+    border: 1.5px solid #f5c149;
+  }
+  60% {
+    border: 1.5px solid #ec7d7d;
+  }
+  80% {
+    border: 1.5px solid #42f5ef;
+  }
+  100% {
+    border: 1.5px solid #ed32a6;
+  }
+}
+@keyframes headercon {
+  0% {
+    border-bottom: 2px solid #7aee72;
+  }
+  20% {
+    border-bottom: 2px solid #4ef542;
+  }
+  40% {
+    border-bottom: 2px solid #f5c149;
+  }
+  60% {
+    border-bottom: 2px solid #ec7d7d;
+  }
+  80% {
+    border-bottom: 2px solid #42f5ef;
+  }
+  100% {
+    border-bottom: 2px solid #ed32a6;
+  }
+}
+.fues {
+  animation: logintex 0.4s ease-in 0s 1 alternate;
+}
+
+.logintex {
+  animation: logintex 0.4s ease-in 0s 1 alternate;
+}
+.email {
+  animation: loginemail 0.4s ease-in 0s 1 alternate;
+}
+.password {
+  animation: loginpassowd 0.4s ease-in 0s 1 alternate;
+}
+.dont,
+.butt {
+  animation: logindont 0.4s ease-in 0s 1 alternate;
+}
+@keyframes logintex {
+  0% {
+    transform: translateY(-120px);
+  }
+
+  100% {
+    transform: translate(0px, 0%);
+  }
+}
+
+@keyframes loginemail {
+  0% {
+    transform: translate(-120px, 100%);
+  }
+
+  100% {
+    transform: translate(0px, 0%);
+  }
+}
+
+@keyframes loginpassowd {
+  0% {
+    transform: translate(120px, 100%);
+  }
+
+  100% {
+    transform: translate(0px, 0%);
+  }
+}
+.logo {
+  animation: loginemail 0.4s ease-in 0s 1 alternate;
+}
+
+@keyframes logindont {
+  0% {
+    transform: translateY(120px);
+  }
+  /* 20% {
+    border: 1.5px solid #8b30ec;
+  }
+  40% {
+    border: 1.5px solid #f5c149;
+  }
+  60% {
+    border: 1.5px solid #ec7d7d;
+  }
+  80% {
+    border: 1.5px solid #65c6f3;
+  } */
+  100% {
+    transform: translate(0px, 0%);
+  }
+}
+.email,
+.password {
+  border: 1px solid #4ef542;
+  background: transparent;
+  outline: none;
+  border-radius: 199px;
+}
+.butt:hover {
+  scale: 105%;
+}
