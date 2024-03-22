@@ -12,14 +12,14 @@ const userRegister = async (req, res) => {
   });
   try {
     if (usernameExisted) {
-      res.status(403).json("Username existed");
+      res.status(403).json("user existed");
       return;
     }
     const emailExisted = await User.findOne({
       $or: [{ email }, { phone }],
     });
     if (emailExisted) {
-      res.status(402).json("Already existed");
+      res.status(402).json("user existed");
       return;
     }
     const fuelown = await Fuelowner.findOne({

@@ -1,8 +1,16 @@
 import express from "express";
-import fuelowner from "../controller/fuelownercontroller.js";
+import {
+  allStation,
+  fuelUpdate,
+  fuelcontrol,
+  ownerfuel,
+} from "../controller/fuelownercontroller.js";
 
 const router = express.Router();
 
-router.post("/fuelowner", fuelowner);
+router.post("/fuelowner", ownerfuel);
+router.get(`/fuelcontrol/:id`, fuelcontrol);
+router.get(`/all`, allStation);
+router.put(`/fuelupdate/:id`, fuelUpdate);
 
 export default router;

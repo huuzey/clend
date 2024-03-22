@@ -10,7 +10,10 @@ import { setcurrentuser } from "../app/userslice";
 
 const Login = () => {
   const { currentUser } = useSelector((state) => state.user);
-  console.log("currentuser", currentUser);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [firebase, setFirebase] = useState(false);
+
   const dispatch = useDispatch();
   const { email: curemail } = useSelector((state) => state.user);
   const [inputdata, setInputdata] = useState({
@@ -18,9 +21,11 @@ const Login = () => {
     password: "",
   });
 
-  const [loading, setLoading] = useState(false);
-  const [firebase, setFirebase] = useState(false);
-  const navigate = useNavigate();
+  if (currentUser?.rest?._id) {
+    navigate("/");
+    return;
+  }
+
   const inputfun = (e) => {
     setInputdata({ ...inputdata, [e.target.name]: e.target.value });
   };
@@ -52,6 +57,20 @@ const Login = () => {
           body: JSON.stringify(inputdata),
         });
         const data = await response.json();
+        if (data === "email or password") {
+          toast("Email or Password incorrect!", {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            type: "error",
+          });
+          return;
+        }
         if (data === "Successfully logged") {
           toast("Successfully Logged In!", {
             position: "bottom-right",
@@ -106,19 +125,18 @@ const Login = () => {
         <div className=" unlogin  shadow-inner shadow-blue-500 flex  p-4 justify-end items-center flex-col gap-6 text-[#4ef542]  bg-transparent backdrop-blur-[16px]">
           <h1 className=" logintex text-[18px] font-bold">Login</h1>
 
-          {!firebase ||
-            (!curemail && (
-              <input
-                type="email"
-                value={setInputdata.email}
-                name="email"
-                onChange={(e) => {
-                  inputfun(e);
-                }}
-                placeholder="Email"
-                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#78f376] w-[100%] "
-              />
-            ))}
+          {!firebase && !curemail && (
+            <input
+              type="email"
+              value={setInputdata.email}
+              name="email"
+              onChange={(e) => {
+                inputfun(e);
+              }}
+              placeholder="Email"
+              className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#78f376] w-[100%] "
+            />
+          )}
           <input
             type="password"
             placeholder="Password"

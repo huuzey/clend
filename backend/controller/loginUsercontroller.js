@@ -1,6 +1,7 @@
 import User from "../models/user.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import fuelown from "../models/fuelowner.js";
 
 const loginuser = async (req, res) => {
   const { email, password } = req.body;
@@ -16,6 +17,7 @@ const loginuser = async (req, res) => {
         res.status(400).json("email or password");
         return;
       }
+      const fuelId = await fuelown.findOne({ email });
       const { password: pass, ...rest } = existed._doc;
       const token = jwt.sign(
         {
@@ -32,7 +34,7 @@ const loginuser = async (req, res) => {
       res
         .status(200)
         .cookie("access_token", token, { httpOnly: true })
-        .json(rest);
+        .json({ rest, fuelId });
       return;
     }
   } catch (error) {

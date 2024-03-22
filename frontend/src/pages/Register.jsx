@@ -12,9 +12,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setEmail, setcurrentuser } from "../app/userslice";
 export const BASE_URL = "http://localhost:4000";
 const Register = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { currentUser } = useSelector((state) => state.user);
-  console.log("currentuser", currentUser);
+  if (currentUser._id) {
+    navigate("/");
+    return;
+  }
+
+  const dispatch = useDispatch();
   const [inputdata, setInputdata] = useState({
     username: "",
     email: "",
@@ -24,7 +30,7 @@ const Register = () => {
   });
   const [loading, setLoading] = useState(false);
   const [firebase, setFirebase] = useState(false);
-  const navigate = useNavigate();
+
   const inputfun = (e) => {
     setInputdata({ ...inputdata, [e.target.name]: e.target.value });
   };
@@ -34,6 +40,22 @@ const Register = () => {
   const submitHandler = async (e) => {
     setLoading(true);
     e.preventDefault();
+    var re = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
+    if (!re.test(inputdata.phone)) {
+      toast("Phone number is not correct!", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        type: "error",
+      });
+      setLoading(false);
+      return;
+    }
     if (
       !inputdata.username ||
       !inputdata.email ||
@@ -68,6 +90,22 @@ const Register = () => {
           body: JSON.stringify(inputdata),
         });
         const data = await response.json();
+        if (data === "user existed try to login") {
+          toast("user existed", {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            type: "error",
+          });
+
+          setLoading(false);
+          return;
+        }
         if (data === "Successfully registered") {
           toast("Successfully Registered!", {
             position: "bottom-right",
@@ -125,6 +163,7 @@ const Register = () => {
         <div className=" unlogin  shadow-inner shadow-blue-500 flex  p-4 justify-end items-center flex-col gap-6 text-[#4ef542]  bg-transparent backdrop-blur-[16px]">
           <h1 className=" logintex text-[18px] font-bold">Register</h1>
           <input
+            required
             type="text"
             value={setInputdata.username}
             name="username"
@@ -136,6 +175,7 @@ const Register = () => {
           />
           {!firebase && (
             <input
+              required
               type="email"
               value={setInputdata.email}
               name="email"
@@ -147,6 +187,7 @@ const Register = () => {
             />
           )}
           <input
+            required
             type="password"
             placeholder="Password"
             value={setInputdata.password}
@@ -157,6 +198,7 @@ const Register = () => {
             className="password px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#4ef542] w-[100%] "
           />
           <input
+            required
             type="phone"
             value={setInputdata.phone}
             name="phone"
@@ -167,6 +209,7 @@ const Register = () => {
             className="password px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#4ef542] w-[100%] "
           />
           <input
+            required
             value={setInputdata.address}
             name="address"
             onChange={(e) => {
