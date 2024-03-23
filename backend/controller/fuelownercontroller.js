@@ -50,11 +50,33 @@ const fuelUpdate = async (req, res) => {
 const allStation = async (req, res) => {
   try {
     const stations = await Fuelowner.find();
-    res.status(200).json(stations);
+    const rest = stations.map((station) => {
+      const { email: em, phone: ph, ...filetered } = station._doc;
+      return filetered;
+    });
+    res.status(200).json({ rest });
   } catch (error) {
     console.log(error);
     res.status(400).json("Something went wrong!");
   }
-  console.log("all stations");
 };
-export { ownerfuel, fuelcontrol, fuelUpdate, allStation };
+const stationSearch = async (req, res) => {
+  const { location, service } = req.query;
+  try {
+    const requested = await Fuelowner.find({
+      ...(location && { location: { $regex: location, $options: "i" } }),
+      ...(service === "kerosene" && { kerosene: true }),
+      ...(service === "benzene" && { benzene: true }),
+      ...(service === "naphta" && { naphta: true }),
+    });
+    const rest = requested.map((station) => {
+      const { email: em, phone: ph, ...filetered } = station._doc;
+      return filetered;
+    });
+    res.status(200).json({ rest });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json("Something went wrong!");
+  }
+};
+export { ownerfuel, fuelcontrol, stationSearch, fuelUpdate, allStation };
