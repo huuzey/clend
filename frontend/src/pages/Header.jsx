@@ -21,7 +21,7 @@ const Header = () => {
         <h1 className="text-2xl self-center">መንደያ</h1>
       </a>
       <div className="flex gap-4 fues ">
-        {!pathname === "/fuelstations" && (
+        {pathname !== "/fuelstations" && (
           <a href="/fuelstations" className="cursor-pointer">
             Fuel Station
           </a>

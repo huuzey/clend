@@ -90,7 +90,7 @@ const Register = () => {
           body: JSON.stringify(inputdata),
         });
         const data = await response.json();
-        if (data === "user existed try to login") {
+        if (data === "user existed") {
           toast("user existed", {
             position: "bottom-right",
             autoClose: 3000,

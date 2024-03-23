@@ -98,6 +98,7 @@ const TopAdmin = () => {
         theme: "light",
         type: "error",
       });
+      return;
     }
     if (todata.email && todata.phone && todata.name && todata.location) {
       try {
