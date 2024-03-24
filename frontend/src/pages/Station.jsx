@@ -1,9 +1,11 @@
 import React from "react";
 import { CiStar } from "react-icons/ci";
 import { IoLocationSharp } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const Station = ({ main }) => {
   var setrate = "";
+  const navigate = useNavigate();
   const rateFun = () => {
     switch (main?.rating) {
       case 1:
@@ -73,8 +75,8 @@ const Station = ({ main }) => {
   rateFun();
   return (
     <a
-      href="#"
-      className=" singlestation overflow-hidden flex flex-col rounded-md"
+      onClick={() => navigate(`/fuelstation/${main._id}`)}
+      className=" singlestation overflow-hidden flex flex-col rounded-md  shadow-green-200 mb-2 shadow-md"
     >
       <div>
         <img
@@ -84,7 +86,7 @@ const Station = ({ main }) => {
         />
       </div>
       <div className="mt-2 flex text-black justify-between mr-2 items-center">
-        <p>{main.rating === 0 ? "Not rated" : setrate}</p>
+        <p className="ml-1">{main.rating === 0 ? "Not rated" : setrate}</p>
         <div className="flex justify-center items-center gap-1">
           <IoLocationSharp />
 

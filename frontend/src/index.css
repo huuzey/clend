@@ -188,6 +188,10 @@ input:checked {
     transform: rotate(-2deg);
   }
 }
+.fuelimage:hover {
+  overflow: hidden;
+  animation: imagestation 2s ease-out 0s 1 alternate;
+}
 /*
  * react-circular-progressbar styles
  * All of the styles in this file are configurable!

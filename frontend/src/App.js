@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import TopAdmin from "./pages/TopAdmin";
 import Fuelcontrol from "./pages/Fuelcontrol";
 import Fuelstations from "./pages/Fuelstations";
+import Fuel from "./pages/Fuel";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/topadmin" element={<TopAdmin />}></Route>
         <Route path="/fuelcontrol/:id" element={<Fuelcontrol />}></Route>
         <Route path="/fuelstations" element={<Fuelstations />}></Route>
+        <Route path="/fuelstation/:id" element={<Fuel />}></Route>
       </Routes>
     </BrowserRouter>
   );

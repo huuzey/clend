@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { BASE_URL } from "./Register";
 import { setcurrentuser } from "../app/userslice";
 import { CiStar } from "react-icons/ci";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Fuelcontrol = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -17,19 +19,24 @@ const Fuelcontrol = () => {
   });
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   var setrate = "";
   useEffect(() => {
     setLoading(true);
     const fetchfuel = async () => {
       try {
         const response = await fetch(
-          `${BASE_URL}/user/fuelcontrol/${currentUser?.fuelId?._id}`,
+          `${BASE_URL}/user/fuelcontrol/${currentUser?.fuelId?._id}/${currentUser?.rest?.email}`,
           {
             method: "GET",
           }
         );
         const data = await response.json();
         setError(false);
+        if (data === "Doen't exist") {
+          navigate("/");
+          return;
+        }
         if (data === "Something went wrong!") {
           setError(true);
           return;
@@ -62,7 +69,7 @@ const Fuelcontrol = () => {
 
     try {
       const response = await fetch(
-        `${BASE_URL}/user/fuelupdate/${currentUser?.fuelId?._id}`,
+        `${BASE_URL}/user/fuelupdate/${currentUser?.fuelId?._id}/${currentUser?.rest?._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -70,7 +77,7 @@ const Fuelcontrol = () => {
         }
       );
       const data = await response.json();
-      if (data === "Successfully Updated") {
+      if (response.ok) {
         toast("Successfully Updated!", {
           position: "bottom-right",
           autoClose: 3000,
@@ -238,7 +245,7 @@ const Fuelcontrol = () => {
           <img
             src={control?.image}
             alt="upload"
-            className="w-[30%] rounded-md h-[30%]"
+            className="w-[300px]  h-[200px] rounded-md "
           />
         </div>
         <div className="text-center">
@@ -305,6 +312,7 @@ const Fuelcontrol = () => {
           </button>
         </div>
       </form>
+      <ToastContainer />;
     </div>
   );
 };
