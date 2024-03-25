@@ -160,7 +160,7 @@ const Register = () => {
   return (
     <div className="logincontainer justify-center flex  items-center">
       <form onSubmit={submitHandler}>
-        <div className=" unlogin  shadow-inner shadow-blue-500 flex  p-4 justify-end items-center flex-col gap-6 text-[#4ef542]  bg-transparent backdrop-blur-[16px]">
+        <div className=" unlogin  shadow-inner shadow-blue-500 flex  p-4 justify-end items-center flex-col gap-6 text-[#78f376]  bg-transparent backdrop-blur-[16px]">
           <h1 className=" logintex text-[18px] font-bold">Register</h1>
           <input
             required
@@ -195,7 +195,7 @@ const Register = () => {
             onChange={(e) => {
               inputfun(e);
             }}
-            className="password px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#4ef542] w-[100%] "
+            className="password px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
           />
           <input
             required
@@ -206,7 +206,7 @@ const Register = () => {
               inputfun(e);
             }}
             placeholder="Phone Number"
-            className="password px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#4ef542] w-[100%] "
+            className="password px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
           />
           <input
             required
@@ -217,7 +217,7 @@ const Register = () => {
             }}
             type="text"
             placeholder="Address"
-            className="password px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#4ef542] w-[100%] "
+            className="password px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
           />
           <button
             type="submit"

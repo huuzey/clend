@@ -40,6 +40,28 @@ body {
   border-radius: 999px;
   background-color: green;
   background-position: center;
+  animation: rater 4s ease-in-out 1s infinite alternate;
+}
+
+@keyframes rater {
+  0% {
+    border: 1.5px solid #7aee72;
+  }
+  20% {
+    border: 1.5px solid #4ef542;
+  }
+  40% {
+    border: 1.5px solid #111110;
+  }
+  60% {
+    border: 1.5px solid #3d15c1;
+  }
+  80% {
+    border: 1.5px solid #42f5ef;
+  }
+  100% {
+    border: 1.5px solid #ed32a6;
+  }
 }
 .headercontainer {
   animation: headercon 4s ease-in-out 1s infinite alternate;

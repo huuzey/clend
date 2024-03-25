@@ -175,7 +175,11 @@ const TopAdmin = () => {
           <div className=" unlogin  shadow-inner shadow-blue-500 flex  p-4 justify-end items-center flex-col gap-6 text-[#4ef542]  bg-transparent backdrop-blur-[26px]">
             <div className="flex justify-center items-center ">
               {imageurl && (
-                <img src={imageurl} alt="upload" className="w-[30%] h-[30%]" />
+                <img
+                  src={imageurl}
+                  alt="upload"
+                  className="w-[300px]  h-[200px] rounded-md"
+                />
               )}
             </div>
 
@@ -188,7 +192,7 @@ const TopAdmin = () => {
                   handleinput(e);
                 }}
                 placeholder="Email"
-                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#78f376] w-[100%] "
+                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
               />
               <input
                 type="phone"
@@ -198,7 +202,7 @@ const TopAdmin = () => {
                   handleinput(e);
                 }}
                 placeholder="Phone"
-                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#78f376] w-[100%] "
+                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
               />
             </div>
             <div className="justify-center flex  items-center gap-3">
@@ -210,7 +214,7 @@ const TopAdmin = () => {
                   handleinput(e);
                 }}
                 placeholder="Name"
-                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#78f376] w-[100%] "
+                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
               />
               <input
                 type="text"
@@ -220,10 +224,10 @@ const TopAdmin = () => {
                   handleinput(e);
                 }}
                 placeholder="Location"
-                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#78f376] w-[100%] "
+                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
               />
             </div>
-            <div className="justify-center flex w-full px-1  items-center gap-3">
+            <div className="justify-center flex w-full px-1 text-[#1a2f19] items-center gap-3">
               <div className="justify-center flex  items-center gap-3">
                 <p>Benzene</p>
                 <input
@@ -233,11 +237,11 @@ const TopAdmin = () => {
                   onChange={() => {
                     setBenzene(!benzene);
                   }}
-                  className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#78f376] w-[100%] "
+                  className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
                 />
               </div>
               <div className="justify-center flex  items-center gap-3">
-                <p>Krosene</p>
+                <p>Kerosene</p>
                 <input
                   type="checkbox"
                   value={todata.kerosene}

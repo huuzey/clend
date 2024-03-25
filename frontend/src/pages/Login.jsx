@@ -134,7 +134,7 @@ const Login = () => {
                 inputfun(e);
               }}
               placeholder="Email"
-              className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#78f376] w-[100%] "
+              className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
             />
           )}
           <input
@@ -145,12 +145,12 @@ const Login = () => {
             onChange={(e) => {
               inputfun(e);
             }}
-            className="password px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#4ef542] w-[100%] "
+            className="password px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
           />
           <button
             type="submit"
             disabled={loading}
-            className=" disabled:cursor-progress disabled:opacity-40 butt text-[13px] font-bold bg-transparent border-[1px] border-[#4ef542] py-2 px-7 rounded-3xl"
+            className=" disabled:cursor-progress disabled:opacity-40 butt text-[#1a2f19]  text-[13px] font-bold bg-transparent border-[1px] border-[#4ef542] py-2 px-7 rounded-3xl"
           >
             {loading ? "Submitting" : "Submit"}
           </button>

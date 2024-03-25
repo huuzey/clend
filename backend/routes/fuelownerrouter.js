@@ -4,6 +4,7 @@ import {
   fuelUpdate,
   fuelcontrol,
   ownerfuel,
+  rateme,
   singlefuel,
   stationSearch,
 } from "../controller/fuelownercontroller.js";
@@ -15,7 +16,8 @@ router.post("/fuelowner", ownerfuel);
 router.get(`/fuelcontrol/:id/:email`, fuelcontrol);
 router.get(`/all`, allStation);
 router.get(`/search`, stationSearch);
-router.get(`/singlefuel/:id`, singlefuel);
+router.get(`/singlefuel/:id/:email`, singlefuel);
 router.put(`/fuelupdate/:id/:user`, fuelUpdate);
+router.put(`/rateme/:id`, rateme);
 
 export default router;

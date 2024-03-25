@@ -5,6 +5,7 @@ import { setcurrentuser } from "../app/userslice";
 import { CiStar } from "react-icons/ci";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Rating from "../components/Rating";
 
 const Fuelcontrol = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -18,6 +19,8 @@ const Fuelcontrol = () => {
     image: "",
   });
   const [error, setError] = useState(false);
+  const [val, setVal] = useState(0);
+
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   var setrate = "";
@@ -47,11 +50,12 @@ const Fuelcontrol = () => {
           kerosene: data?.kerosene,
           queue: data?.queue,
           name: data?.name,
-          rating: data?.rating,
+          rating: data?.rating?.value,
           image: data?.image,
         });
         console.log("control", control);
-
+        const ress = Rating(data?.rating);
+        setVal(ress);
         setLoading(false);
         console.log("fuelcontrol", data);
       } catch (error) {
@@ -103,7 +107,7 @@ const Fuelcontrol = () => {
         kerosene: data?.kerosene,
         queue: data?.queue,
         name: data?.name,
-        rating: data?.rating,
+        rating: data?.rating?.value,
         image: data?.image,
       });
       setLoading(false);
@@ -127,8 +131,8 @@ const Fuelcontrol = () => {
     }
   };
   const rateFun = () => {
-    switch (control?.rating) {
-      case 1:
+    switch (val) {
+      case "1":
         setrate = (
           <div className="flex">
             <CiStar className="ratecont" />
@@ -140,7 +144,7 @@ const Fuelcontrol = () => {
         );
 
         break;
-      case 2:
+      case "2":
         setrate = (
           <div className="flex">
             <CiStar className="ratecont" />
@@ -152,7 +156,7 @@ const Fuelcontrol = () => {
         );
 
         break;
-      case 3:
+      case "3":
         setrate = (
           <div className="flex">
             <CiStar className="ratecont" />
@@ -164,7 +168,7 @@ const Fuelcontrol = () => {
         );
 
         break;
-      case 4:
+      case "4":
         setrate = (
           <div className="flex">
             <CiStar className="ratecont" />
@@ -176,7 +180,7 @@ const Fuelcontrol = () => {
         );
 
         break;
-      case 5:
+      case "5":
         setrate = (
           <div className="flex">
             <CiStar className="ratecont" />
@@ -229,16 +233,18 @@ const Fuelcontrol = () => {
     );
   }
   return (
-    <div className="flex justify-evenly items-center text-[#4ef542] gap-8 flex-col  my-8 w-full">
+    <div className="flex justify-evenly items-center text-[#1a2f19] gap-8 flex-col  my-8 w-full">
       <form
         onSubmit={handleUpdate}
-        className="flex justify-evenly items-center text-[#4ef542] gap-8 flex-col mx-10 my-8 w-full"
+        className="flex justify-evenly items-center text-[#1a2f19] gap-8 flex-col mx-10 my-8 w-full"
       >
         <div className="text-center">
-          <h1 className="text-4xl flex justify-center items-center gap-3 flex-row text-center text-[#4ef542]">
-            {control?.name}{" "}
+          <h1 className="text-4xl flex font-bold justify-center items-center gap-3 flex-row text-center text-[#4ef542]">
+            {control?.name}
             <span className="text-gray-300 mt-2 ">{setrate}</span>{" "}
-            <span className="text-lg">({control?.rating})</span>
+            <span className="text-lg">
+              {control?.rating ? control?.rating : ""}
+            </span>
           </h1>
         </div>
         <div className="flex justify-center items-center ">

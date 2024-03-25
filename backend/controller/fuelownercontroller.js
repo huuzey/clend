@@ -86,16 +86,44 @@ const stationSearch = async (req, res) => {
   }
 };
 const singlefuel = async (req, res) => {
-  const { id } = req.params;
+  const { id, email } = req.params;
+  var ems = "";
   try {
     const exists = await Fuelowner.findById(id);
     if (!exists) {
       res.status(400).json("Something went wrong!");
       return;
     }
-    const { email: em, phone: ph, ...rest } = exists._doc;
 
-    res.status(200).json({ rest });
+    const { email: em, phone: ph, ...rest } = exists._doc;
+    if (em === email) {
+      ems = true;
+    }
+    res.status(200).json({ rest, ems });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json("Something went wrong!");
+  }
+};
+const rateme = async (req, res) => {
+  const { id } = req.params;
+  const { userId, values } = req.body;
+  try {
+    const found = await Fuelowner.findById(id);
+    const done = await found.updateOne({
+      email: found.email,
+      phone: found.phone,
+      name: found.name,
+      image: found.image,
+      location: found.location,
+      queue: found.queue,
+      benzene: found.benzene,
+      naphta: found.naphta,
+      kerosene: found.kerosene,
+      rating: [...found.rating, { user: userId, value: values }],
+    });
+
+    res.status(200).json("Successfully rated!");
   } catch (error) {
     console.log(error);
     res.status(400).json("Something went wrong!");
@@ -108,4 +136,5 @@ export {
   stationSearch,
   fuelUpdate,
   allStation,
+  rateme,
 };

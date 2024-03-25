@@ -22,7 +22,6 @@ mongoose
   })
   .catch((error) => {
     console.log(error);
-    window.location.reload();
   });
 
 app.use("/user", userrouter);

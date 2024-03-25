@@ -40,10 +40,7 @@ const fuelOwner = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  rating: {
-    type: Number,
-    default: 0,
-  },
+  rating: [{ user: { type: String }, value: { type: Number } }],
 });
 
 const fuelown = mongoose.model("fuelowner", fuelOwner);
