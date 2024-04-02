@@ -213,21 +213,21 @@ const Fuelcontrol = () => {
   };
   if (error) {
     return (
-      <div className="flex items-center mt-10 justify-center font-bold text-center text-3xl text-[#4ef542]">
+      <div className="flex items-center mt-10 justify-center font-bold text-center text-3xl text-[#1a2f19]">
         Something went wrong! please refresh the page.
       </div>
     );
   }
   if (loading) {
     return (
-      <div className="flex items-center mt-10 justify-center font-bold text-center text-3xl text-[#4ef542]">
+      <div className="flex items-center mt-10 justify-center font-bold text-center text-3xl text-[#1a2f19]">
         Loading...
       </div>
     );
   }
   if (control === "Something went wrong!") {
     return (
-      <div className="flex items-center mt-10 justify-center font-bold text-center text-3xl text-[#4ef542]">
+      <div className="flex items-center mt-10 justify-center font-bold text-center text-3xl text-[#1a2f19]">
         Something went wrong!
       </div>
     );

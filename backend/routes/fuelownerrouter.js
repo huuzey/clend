@@ -9,10 +9,18 @@ import {
   stationSearch,
 } from "../controller/fuelownercontroller.js";
 import { verifyToken } from "../controller/verifyToken.js";
+import {
+  addwerefa,
+  updatewerefa,
+  werefa,
+} from "../controller/werefacontroller.js";
 
 const router = express.Router();
 
 router.post("/fuelowner", ownerfuel);
+router.post("/fuelowner/werefa", addwerefa);
+router.put("/fuelowner/updatewerefa/:id", updatewerefa);
+router.get("/werefa/:id", werefa);
 router.get(`/fuelcontrol/:id/:email`, fuelcontrol);
 router.get(`/all`, allStation);
 router.get(`/search`, stationSearch);

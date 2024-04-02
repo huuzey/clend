@@ -6,7 +6,10 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import Rating from "../components/Rating";
 import RatSub from "../components/RateSub";
+// import { geocoding } from "gebetamap";
+
 import { IoLocationSharp } from "react-icons/io5";
+import Geo from "../components/Geo";
 
 const Fuel = () => {
   const { id } = useParams();
@@ -15,8 +18,8 @@ const Fuel = () => {
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState(0);
   const [already, setAlready] = useState(false);
+  const [local, setLocal] = useState("");
   const [sub, setSub] = useState([]);
-
   const [one, setOne] = useState({
     one: false,
     two: false,
@@ -35,7 +38,40 @@ const Fuel = () => {
     name: "",
   });
   const [val, setVal] = useState(0);
+  const [werefa, setWerefa] = useState();
+  const [long, setLong] = useState(false);
+  const [werefainput, setWerefainput] = useState(false);
+  const [place, setPlace] = useState();
+  const [reserves, setReserves] = useState(false);
+  useEffect(() => {
+    const fetchwerefa = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/station/werefa/${id}`, {
+          method: "GET",
+        });
+        const data = await response.json();
 
+        if (response.ok) {
+          setWerefa(data?.sorteda);
+          if (data?.sorteda) {
+            data?.sorteda.map((wef) => {
+              if (wef.user === currentUser?.rest?._id) {
+                setReserves(true);
+              }
+            });
+          }
+          console.log("werefa", werefa);
+        }
+        if (data === "Doesn't exist!") {
+          setLong(true);
+        }
+        console.log("werefadata", data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchwerefa();
+  }, []);
   useEffect(() => {
     setLoading(true);
     const fetchfuel = async () => {
@@ -60,6 +96,7 @@ const Fuel = () => {
             setAlready(true);
           }
         }
+        setLocal(data?.rest?.location);
         if (data?.ems) {
           setAlready(true);
         }
@@ -252,28 +289,135 @@ const Fuel = () => {
   rateFun();
   if (error) {
     return (
-      <div className="flex items-center mt-10 justify-center font-bold text-center text-3xl text-[#4ef542]">
+      <div className="flex items-center mt-10 justify-center font-bold text-center text-3xl text-[#1a2f19]">
         Something went wrong! please refresh the page.
       </div>
     );
   }
   if (loading) {
     return (
-      <div className="flex items-center mt-10 justify-center font-bold text-center text-3xl text-[#4ef542]">
+      <div className="flex items-center mt-10 justify-center font-bold text-center text-3xl text-[#1a2f19]">
         Loading...
       </div>
     );
   }
   if (fuel === "Something went wrong!") {
     return (
-      <div className="flex items-center mt-10 justify-center font-bold text-center text-3xl text-[#4ef542]">
+      <div className="flex items-center mt-10 justify-center font-bold text-center text-3xl text-[#1a2f19]">
         Something went wrong!
       </div>
     );
   }
+  console.log("place", place);
+  const handlewerefa = async () => {
+    if (place < 50) {
+      toast("Value should be greater than 50", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        type: "error",
+      });
+
+      return;
+    }
+    console.log("clicks", currentUser?.rest?._id, place, id);
+    try {
+      const respond = await fetch(`${BASE_URL}/station/fuelowner/werefa`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user: currentUser?.rest?._id,
+          paid: false,
+          amount: place,
+          station: id,
+        }),
+      });
+      console.log("clickedo");
+
+      const data = await respond.json();
+      if (respond.ok) {
+        // data?.werefa?.map((we) => setWerefa(() => [...werefa, we]));
+        setWerefa(data?.werefa);
+        window.location.reload();
+
+        console.log("werefa", werefa);
+        setLong(false);
+      }
+      console.log("addedwerefa", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const updatewerefa = async () => {
+    if (place < 50) {
+      toast("Value should be greater than 50", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        type: "error",
+      });
+
+      return;
+    }
+    if (werefa?.length === 3) {
+      if (place < werefa[2].amount) {
+        toast("The value should be at least greater than the third place. ", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          type: "error",
+        });
+
+        return;
+      }
+    }
+    console.log("clicks", currentUser?.rest?._id, place, id);
+    try {
+      const respond = await fetch(
+        `${BASE_URL}/station/fuelowner/updatewerefa/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user: currentUser?.rest?._id,
+            paid: false,
+            amount: place,
+          }),
+        }
+      );
+
+      const data = await respond.json();
+      if (respond.ok) {
+        window.location.reload();
+        data?.werefa?.map((we) => setWerefa(() => [...werefa, we]));
+
+        console.log("werefa", werefa);
+        setLong(false);
+      }
+      console.log("addedwerefa", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-start  items-start mx-6 my-5 text-[#1a2f19]">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center gap-14">
         {/* detail about the gas station */}
         <div className="flex flex-col justify-start items-start gap-4">
           <div className="text-center mb-2">
@@ -391,10 +535,230 @@ const Fuel = () => {
           )}
         </div>
         {/* queue and payment */}
-        <div></div>
+        <div>
+          {long && (
+            <>
+              <div>
+                <div className="flex flex-col justify-center items-center gap-2 text-[13px]  ">
+                  <div className="flex  gap-8 justify-center items-center ">
+                    <p>
+                      1<sup>st </sup>place
+                    </p>
+                    <p>Not Reserved</p>
+                  </div>
+                  <div className="bg-[#1a2f19] w-[162px] h-[0.5px]"></div>
+                </div>
+                <div className="flex flex-col gap-2 mt-4 justify-center items-center text-[13px] ">
+                  <div className="flex  gap-8 justify-center items-center ">
+                    <p>
+                      2<sup>nd </sup>place
+                    </p>
+                    <p>Not Reserved</p>
+                  </div>
+                  <div className="bg-[#1a2f19] w-[162px] h-[0.5px]"></div>
+                </div>
+                <div className="flex flex-col gap-2 mt-4 justify-center items-center text-[13px]  ">
+                  <div className="flex  gap-8 justify-center items-center ">
+                    <p>
+                      3<sup>rd </sup>place
+                    </p>
+                    <p>Not Reserved</p>
+                  </div>
+                  <div className="bg-[#1a2f19] w-[162px] h-[0.5px]"></div>
+                </div>
+              </div>
+              {!werefainput && !reserves && (
+                <button
+                  onClick={() => {
+                    setWerefainput(true);
+                  }}
+                  type="button"
+                  className=" ml-10 mt-3  butt text-[10px] flex  justify-center items-center gap-2 font-bold bg-transparent border-[1px] border-[#4ef542] py-2 px-7 rounded-3xl"
+                >
+                  Reserve
+                </button>
+              )}
+              {werefainput && (
+                <>
+                  <div className="flex justify-center flex-row items-center gap-4  ">
+                    <div className="flex justify-center items-center">
+                      <input
+                        type="number"
+                        value={place}
+                        name="queue"
+                        onChange={(e) => {
+                          setPlace(e.target.value);
+                        }}
+                        className="password mt-3 px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#4ef542] w-[70px] "
+                      />
+                      <p className="mt-3">ETB</p>{" "}
+                    </div>
+                    <button
+                      onClick={handlewerefa}
+                      type="button"
+                      className="  mt-3  butt text-[10px] flex  justify-center items-center gap-2 font-bold bg-transparent border-[1px] border-[#4ef542] py-2 px-7 rounded-3xl"
+                    >
+                      Submit
+                    </button>{" "}
+                  </div>
+                </>
+              )}
+            </>
+          )}
+          {werefa?.length > 0 && (
+            <>
+              <div className="flex flex-col gap-2 mt-4 text-[13px]  ">
+                <div className="flex  gap-8 justify-center items-center ">
+                  <p>
+                    1<sup>st </sup>place
+                  </p>
+                  <p>{werefa[0]?.amount} ETB</p>
+                </div>
+                <div className="bg-[#1a2f19] w-[322px] h-[0.5px]"></div>
+              </div>
+              {werefa?.length === 2 && (
+                <div className="flex flex-col gap-2 mt-4 text-[13px]  ">
+                  <div className="flex  gap-8 justify-center items-center ">
+                    <p>
+                      2<sup>nd </sup>place
+                    </p>
+                    <p>{werefa[1]?.amount} ETB</p>
+                  </div>
+                  <div className="bg-[#1a2f19] w-[322px] h-[0.5px]"></div>
+                </div>
+              )}
+              {werefa?.length === 3 && (
+                <>
+                  <div className="flex flex-col gap-2 mt-4 text-[13px]  ">
+                    <div className="flex  gap-8 justify-center items-center ">
+                      <p>
+                        2<sup>nd </sup>place
+                      </p>
+                      <p>{werefa[1]?.amount} ETB</p>
+                    </div>
+                    <div className="bg-[#1a2f19] w-[322px] h-[0.5px]"></div>
+                  </div>
+                  <div className="flex flex-col gap-2 mt-4 text-[13px]  ">
+                    <div className="flex  gap-8 justify-center items-center ">
+                      <p>
+                        3<sup>rd </sup>place
+                      </p>
+                      <p>{werefa[2]?.amount} ETB</p>
+                    </div>
+                    <div className="bg-[#1a2f19] w-[322px] h-[0.5px]"></div>
+                  </div>
+                </>
+              )}
+              {werefa?.length < 3 && (
+                <>
+                  {werefa?.length !== 2 && (
+                    <div className="flex flex-col gap-2 mt-4  text-[13px] ">
+                      <div className="flex  gap-8 justify-center items-center ">
+                        <p>
+                          2<sup>nd </sup>place
+                        </p>
+                        <p>Not Reserved</p>
+                      </div>
+                      <div className="bg-[#1a2f19] w-[322px] h-[0.5px]"></div>
+                    </div>
+                  )}
+                  <div className="flex flex-col gap-2 mt-4 text-[13px]  ">
+                    <div className="flex  gap-8 justify-center items-center ">
+                      <p>
+                        3<sup>rd </sup>place
+                      </p>
+                      <p>Not Reserved</p>
+                    </div>
+                    <div className="bg-[#1a2f19] w-[322px] h-[0.5px]"></div>
+                  </div>
+                  {!werefainput && !reserves && (
+                    <button
+                      onClick={() => {
+                        setWerefainput(true);
+                      }}
+                      type="button"
+                      className=" ml-10 mt-3  butt text-[10px] flex  justify-center items-center gap-2 font-bold bg-transparent border-[1px] border-[#4ef542] py-2 px-7 rounded-3xl"
+                    >
+                      Reserve
+                    </button>
+                  )}
+                  {werefainput && (
+                    <>
+                      <div className="flex justify-center flex-row items-center gap-4  ">
+                        <div className="flex justify-center items-center">
+                          <input
+                            type="number"
+                            value={place}
+                            name="queue"
+                            onChange={(e) => {
+                              setPlace(e.target.value);
+                            }}
+                            className="password mt-3 px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#4ef542] w-[70px] "
+                          />
+                          <p className="mt-3">ETB</p>{" "}
+                        </div>
+                        <button
+                          onClick={updatewerefa}
+                          type="button"
+                          className="  mt-3  butt text-[10px] flex  justify-center items-center gap-2 font-bold bg-transparent border-[1px] border-[#4ef542] py-2 px-7 rounded-3xl"
+                        >
+                          Submit
+                        </button>{" "}
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
+          {werefa?.length === 3 && !reserves && (
+            <>
+              {!werefainput && !reserves && (
+                <button
+                  onClick={() => {
+                    setWerefainput(true);
+                  }}
+                  type="button"
+                  className=" ml-10 mt-3  butt text-[10px] flex  justify-center items-center gap-2 font-bold bg-transparent border-[1px] border-[#4ef542] py-2 px-7 rounded-3xl"
+                >
+                  Reserve
+                </button>
+              )}
+              {werefainput && (
+                <>
+                  <div className="flex justify-center flex-row items-center gap-4  ">
+                    <div className="flex justify-center items-center">
+                      <input
+                        type="number"
+                        value={place}
+                        name="queue"
+                        onChange={(e) => {
+                          setPlace(e.target.value);
+                        }}
+                        className="password mt-3 px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#4ef542] w-[70px] "
+                      />
+                      <p className="mt-3">ETB</p>{" "}
+                    </div>
+                    <button
+                      onClick={updatewerefa}
+                      type="button"
+                      className="  mt-3  butt text-[10px] flex  justify-center items-center gap-2 font-bold bg-transparent border-[1px] border-[#4ef542] py-2 px-7 rounded-3xl"
+                    >
+                      Submit
+                    </button>{" "}
+                  </div>
+                </>
+              )}
+            </>
+          )}
+        </div>
       </div>
       {/* map */}
-      <div></div>
+      {/* {!loading && (
+        <div>
+          <Geo />
+        </div>
+      )} */}
       <ToastContainer />
     </div>
   );
