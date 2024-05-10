@@ -1,7 +1,38 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import SlotCounter from "react-slot-counter";
+
 import { products } from "./products";
 
 const Product = () => {
+  const [inViewport, setInViewport] = useState(false);
+  const componentRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Update state based on whether the component is in the viewport
+        setInViewport(entry.isIntersecting);
+      }
+      // {
+      //   // Optionally configure the root, rootMargin, and threshold
+      //   root: null,
+      //   rootMargin: "0px",
+      //   threshold: 0.1, // Intersection ratio at which the callback should be executed
+      // }
+    );
+
+    // Start observing the component
+    if (componentRef.current) {
+      observer.observe(componentRef.current);
+    }
+
+    // Cleanup function to disconnect the observer when component unmounts
+    return () => {
+      if (componentRef.current) {
+        observer.unobserve(componentRef.current);
+      }
+    };
+  }, []);
   return (
     <div className="grid grid-cols-4 gap-2 mx-5 mt-5">
       {products.map((prod, index) => (
@@ -18,9 +49,12 @@ const Product = () => {
               <p className="py-2">{prod.name}</p>
               <p>
                 {" "}
-                <span className="text-[#00ffff] font-bold text-[16px]">
-                  {prod.price}
-                </span>{" "}
+                <div
+                  ref={componentRef}
+                  className=" text-[#00ffff] font-bold text-[16px]"
+                >
+                  {inViewport && <SlotCounter value={prod.price} />}
+                </div>
                 ETB
               </p>
             </div>
