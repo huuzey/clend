@@ -6,6 +6,7 @@ import { CiStar } from "react-icons/ci";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Rating from "../components/Rating";
+import TimeAgo from "react-timeago";
 
 const Fuelcontrol = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -269,7 +270,7 @@ const Fuelcontrol = () => {
               />
             </div>
             <div className="justify-center flex  items-center gap-3">
-              <p>Krosene</p>
+              <p>Kerosene</p>
               <input
                 checked={control?.kerosene}
                 type="checkbox"

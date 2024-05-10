@@ -1,0 +1,1 @@
+next: adding  time functionality on werefa and removing the werefa if the time is more than 3 hours.

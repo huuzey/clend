@@ -7,6 +7,7 @@ import { clearLine } from "readline";
 dotenv.config();
 import userrouter from "./routes/userroute.js";
 import fuelowner from "./routes/fuelownerrouter.js";
+import reports from "./routes/reportroute.js";
 
 const app = express();
 app.listen(4000, () => {
@@ -27,3 +28,4 @@ mongoose
 app.use("/user", userrouter);
 app.use("/user", fuelowner);
 app.use("/station", fuelowner);
+app.use("/road", reports);

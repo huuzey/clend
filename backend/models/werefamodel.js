@@ -8,7 +8,7 @@ const werefaschema = new mongoose.Schema({
       user: { type: String },
       plate: { type: String, required: false },
       paid: { type: Boolean },
-      time: { type: Date, default: Date.now() },
+      time: { type: Date },
       amount: { type: Number },
     },
   ],

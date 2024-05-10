@@ -14,6 +14,8 @@ const Header = () => {
   const { pathname } = useLocation();
   const [expand, setExpand] = useState(false);
   const navigate = useNavigate();
+  const onew = currentUser.rest.username.slice(0, 1).toUpperCase();
+  const rest = currentUser.rest.username.slice(1, 3);
   return (
     <div className="flex headercontainer z-10 justify-between rounded-lg sticky top-0 border-b-[#4ef542] border-b-[1.5px] text-[#4ef542] bg-white   items-center w-[100%] ">
       <a href="/" className="py-2 px-3 flex logo gap-2">
@@ -22,12 +24,12 @@ const Header = () => {
       </a>
       <div className="flex gap-4 fues ">
         {pathname !== "/fuelstations" && (
-          <a href="/fuelstations" className="cursor-pointer">
-            Fuel Station
+          <a href="/fuelstations" className="anthe cursor-pointer">
+            Gas Station
           </a>
         )}
         <p
-          className="flex "
+          className="flex anthe"
           onMouseOver={() => {
             setExpand(true);
           }}
@@ -38,8 +40,12 @@ const Header = () => {
           Road
           {expand && (
             <span className="mt-6 bg-white p-3 gap-2  flex flex-col rounded-md ml-4 fixed">
-              <a href="#">Report</a>
-              <a href="#">Explore</a>
+              <a href="/report" className="anthe">
+                Report
+              </a>
+              <a href="/explore" className="anthe">
+                Explore
+              </a>
             </span>
           )}
           <span>
@@ -59,7 +65,9 @@ const Header = () => {
             </svg>
           </span>
         </p>
-        <a href="#">Market</a>
+        <a href="# " className="anthe">
+          Market
+        </a>
       </div>
       <div className="flex justify-center items-center  gap-2">
         {currentUser?.rest?.fuel ? (
@@ -111,7 +119,13 @@ const Header = () => {
                 )}
               </>
             )}
-            <h1>{currentUser.rest.username}</h1>
+            <h1 className="border-2 border-[#4ef542] p-2   rounded-full">
+              {onew}
+            </h1>
+            <h1>
+              {onew}
+              {rest}
+            </h1>
           </div>
         ) : (
           <div className="pr-4 gap-4 flex  ">

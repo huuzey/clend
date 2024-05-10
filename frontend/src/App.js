@@ -7,6 +7,8 @@ import TopAdmin from "./pages/TopAdmin";
 import Fuelcontrol from "./pages/Fuelcontrol";
 import Fuelstations from "./pages/Fuelstations";
 import Fuel from "./pages/Fuel";
+import Report from "./pages/Report";
+import Explore from "./pages/Explore";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
+        <Route path="/report" element={<Report />}></Route>
+        <Route path="/explore" element={<Explore />}></Route>
         <Route path="/topadmin" element={<TopAdmin />}></Route>
         <Route path="/fuelcontrol/:id" element={<Fuelcontrol />}></Route>
         <Route path="/fuelstations" element={<Fuelstations />}></Route>

@@ -11,6 +11,7 @@ import {
 import { verifyToken } from "../controller/verifyToken.js";
 import {
   addwerefa,
+  deletewerefa,
   updatewerefa,
   werefa,
 } from "../controller/werefacontroller.js";
@@ -19,6 +20,7 @@ const router = express.Router();
 
 router.post("/fuelowner", ownerfuel);
 router.post("/fuelowner/werefa", addwerefa);
+router.put("/user/delete/:id", deletewerefa);
 router.put("/fuelowner/updatewerefa/:id", updatewerefa);
 router.get("/werefa/:id", werefa);
 router.get(`/fuelcontrol/:id/:email`, fuelcontrol);

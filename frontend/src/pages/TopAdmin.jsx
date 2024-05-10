@@ -11,20 +11,26 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
+import Product from "../components/Product";
 
 const TopAdmin = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   const [todata, setTopdata] = useState({});
+  const [prodata, setprodata] = useState({});
   const [loading, setLoading] = useState(false);
   const [benzene, setBenzene] = useState(false);
   const [kerosene, setKerosene] = useState(false);
   const [naphta, setNaphta] = useState(false);
   const [file, setFile] = useState(null);
+  const [filepro, setFilepro] = useState(null);
   const [imageurl, setImageurl] = useState(null);
+  const [imageurlpro, setImageurlpro] = useState(null);
   const [percentile, setPercentile] = useState(null);
+  const [percentilepro, setPercentilepro] = useState(null);
 
   const uploadref = useRef("");
+  const proref = useRef("");
   const navigate = useNavigate();
   if (currentUser?.rest?.email !== "weleladinsefa@gmail.com") {
     navigate("/");
@@ -32,6 +38,52 @@ const TopAdmin = () => {
   }
   const handleinput = (e) => {
     setTopdata({ ...todata, [e.target.name]: e.target.value });
+  };
+  const handleproduct = (e) => {
+    setprodata({ ...prodata, [e.target.name]: e.target.value });
+  };
+  const handleuploadpro = async () => {
+    try {
+      if (!filepro) {
+        return;
+      }
+      const storage = getStorage(app);
+      const Filename = new Date().getTime() + "_" + filepro.name;
+      const storageRef = ref(storage, Filename);
+      const uploadTask = uploadBytesResumable(storageRef, filepro);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setPercentilepro(progress.toFixed(0));
+        },
+        (error) => {
+          console.log(error);
+          toast("Something went wrong with Image uploading!", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            type: "error",
+          });
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadurl) => {
+            setPercentilepro(null);
+            setImageurlpro(downloadurl);
+            setFilepro(null);
+          });
+        }
+      );
+    } catch (error) {
+      setPercentilepro(null);
+      console.log(error);
+    }
   };
   const handleupload = async () => {
     try {
@@ -161,16 +213,21 @@ const TopAdmin = () => {
       }
     }
   };
-  console.log("file", file);
-  console.log("percentile", percentile);
-  console.log("downlodurl", imageurl);
+  console.log("file", filepro);
+  console.log("percentile", percentilepro);
+  console.log("downlodurl", imageurlpro);
   if (file && percentile === null && percentile !== 100) {
     handleupload();
     setFile(null);
   }
+  if (filepro && percentilepro === null && percentilepro !== 100) {
+    handleuploadpro();
+    setFilepro(null);
+  }
   return (
-    <div>
-      <div className="logincontainer justify-center flex  items-center">
+    <div className=" logincontainer flex items-center justify-center">
+      {/* registration gas station */}
+      <div className=" justify-center flex  items-center">
         <form onSubmit={submitHandler}>
           <div className=" unlogin  shadow-inner shadow-blue-500 flex  p-4 justify-end items-center flex-col gap-6 text-[#4ef542]  bg-transparent backdrop-blur-[26px]">
             <div className="flex justify-center items-center ">
@@ -192,7 +249,7 @@ const TopAdmin = () => {
                   handleinput(e);
                 }}
                 placeholder="Email"
-                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
+                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-white w-[100%] "
               />
               <input
                 type="phone"
@@ -202,7 +259,7 @@ const TopAdmin = () => {
                   handleinput(e);
                 }}
                 placeholder="Phone"
-                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
+                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-white w-[100%] "
               />
             </div>
             <div className="justify-center flex  items-center gap-3">
@@ -214,7 +271,7 @@ const TopAdmin = () => {
                   handleinput(e);
                 }}
                 placeholder="Name"
-                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
+                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-white w-[100%] "
               />
               <input
                 type="text"
@@ -224,7 +281,7 @@ const TopAdmin = () => {
                   handleinput(e);
                 }}
                 placeholder="Location"
-                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-[#1a2f19] w-[100%] "
+                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-white w-[100%] "
               />
             </div>
             <div className="justify-center flex w-full px-1 text-[#1a2f19] items-center gap-3">
@@ -307,6 +364,108 @@ const TopAdmin = () => {
         </form>
         <ToastContainer />;
       </div>
+      {/* registration product */}
+
+      {/* <div className=" justify-center flex  items-center">
+        <form onSubmit={submitHandler}>
+          <div className=" unlogin  shadow-inner shadow-blue-500 flex  p-4 justify-end items-center flex-col gap-6 text-[#4ef542]  bg-transparent backdrop-blur-[26px]">
+            <div className="flex justify-center items-center ">
+              {imageurlpro && (
+                <img
+                  src={imageurlpro}
+                  alt="upload"
+                  className="w-[300px]  h-[200px] rounded-md"
+                />
+              )}
+            </div>
+
+            <div className="justify-center flex  items-center gap-3">
+              <input
+                type="name"
+                value={prodata.name}
+                name="name"
+                onChange={(e) => {
+                  handleproduct(e);
+                }}
+                placeholder="name"
+                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-white w-[100%] "
+              />
+              <input
+                type="number"
+                value={prodata.price}
+                name="price"
+                onChange={(e) => {
+                  handleproduct(e);
+                }}
+                placeholder="Price"
+                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-white w-[100%] "
+              />
+            </div>
+            <div className="justify-center flex  items-center gap-3">
+              <input
+                type="text"
+                value={prodata.location}
+                name="location"
+                onChange={(e) => {
+                  handleinput(e);
+                }}
+                placeholder="Location"
+                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:text-white w-[100%] "
+              />
+              <textarea
+                type="text"
+                value={prodata.desc}
+                name="desc"
+                onChange={(e) => {
+                  handleinput(e);
+                }}
+                placeholder="Description"
+                className="email px-4 py-1 placeholder:font-bold placeholder:text-[10px] placeholder:pt-4  placeholder:text-white w-[100%] "
+              />
+            </div>
+
+            <div className="flex justify-center items-center gap-3">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  setFilepro(e.target.files[0]);
+                }}
+                ref={proref}
+                hidden
+              />
+
+              <button
+                disabled={percentilepro}
+                onClick={() => proref.current.click()}
+                type="button"
+                className=" disabled:cursor-progress disabled:opacity-40 butt text-[13px] font-bold bg-transparent border-[1px] border-[#4ef542] py-2 px-7 rounded-3xl"
+              >
+                {percentilepro ? (
+                  <div className="w-10 h-10 text-[#4ef542]">
+                    <CircularProgressbar
+                      value={percentilepro}
+                      text={`${percentilepro || 0}%`}
+                    />
+                  </div>
+                ) : (
+                  "Upload Image"
+                )}
+              </button>
+              {!percentilepro && (
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className=" disabled:cursor-progress disabled:opacity-40 butt text-[13px] font-bold bg-transparent border-[1px] border-[#4ef542] py-2 px-7 rounded-3xl"
+                >
+                  {loading ? "Submitting" : "Submit"}
+                </button>
+              )}
+            </div>
+          </div>
+        </form>
+        <ToastContainer />;
+      </div> */}
     </div>
   );
 };
