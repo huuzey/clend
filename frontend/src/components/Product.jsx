@@ -35,14 +35,17 @@ const Product = () => {
   }, []);
   return (
     <div className="grid grid-cols-4 gap-2 mx-5 mt-5">
-      {products.map((prod, index) => (
+      {products.map((prod) => (
         <>
-          <div key={prod.id} className=" flex flex-col">
-            <div>
+          <div key={prod.id} className=" flex proddesc flex-col relative">
+            <p className="absolute z-10 p-3 text-sm descpro top-1 left-0 text-[#00ffff] ">
+              {prod.description}
+            </p>
+            <div className="-z-0">
               <img
                 src={prod.image}
                 alt={prod.name}
-                className=" stationimage object-cover overflow-hidden w-[300px]  h-[200px] rounded-md"
+                className=" stationimage prodimg object-cover overflow-hidden w-[300px]  h-[200px] rounded-md"
               />
             </div>
             <div className="flex justify-between items-center text-sm pb-4">

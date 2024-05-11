@@ -112,7 +112,25 @@ body {
   text-decoration: none; /* Remove default underline */
   color: inherit;
 }
+.proddesc:hover .descpro {
+  animation: proddesc 4s ease-in-out 0s alternate;
+  display: flex;
+}
+.proddesc .descpro {
+  display: none;
+}
+@keyframes proddesc {
+  0% {
+    transform: translateY(50px);
+  }
 
+  100% {
+    transform: translate(0px, 0%);
+  }
+}
+.proddesc:hover .prodimg {
+  filter: brightness(20%) grayscale(50%);
+}
 .anthe:after {
   content: "";
   position: absolute;
